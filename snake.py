@@ -62,6 +62,16 @@ def move_snake(lastKey,food,SNAKE,CELL_SIZE, WIDTH, HEIGHT, bridges):
         SNAKE.pop(0)
     return True, food
 
+def manager_food(SNAKE,CELL_SIZE,WIDTH, HEIGHT ,bridges):
+    run=True
+    while run:
+        foodx=random.randint(0,WIDTH//CELL_SIZE-1)*CELL_SIZE
+        foody=random.randint(0,HEIGHT//CELL_SIZE-1)*CELL_SIZE
+        food=pygame.Rect(foodx,foody,CELL_SIZE,CELL_SIZE)
+        if food not in SNAKE or food not in bridges:
+            run=False
+    return food
+
 def draw_background(cell_size, height, width):
     color1_line=True
     for h in range(0, height, cell_size):
