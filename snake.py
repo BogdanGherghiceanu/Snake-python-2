@@ -23,6 +23,44 @@ RED = (255,99,71)
 SNAKE_COLOR = BLACK
 FOOD_COLOR= (0, 22, 189)
 
+def move_snake(lastKey,food,SNAKE,CELL_SIZE, WIDTH, HEIGHT, bridges):
+    next = copy.copy(SNAKE[-1])
+
+
+    if lastKey == pygame.K_LEFT:
+        next.x -= CELL_SIZE
+
+    if lastKey == pygame.K_RIGHT:
+        next.x += CELL_SIZE
+
+    if lastKey == pygame.K_UP:
+
+        next.y -= CELL_SIZE
+    if lastKey == pygame.K_DOWN:
+
+        next.y += CELL_SIZE
+    #check if out of border
+   # if next.x <0 or next.x > WIDTH - CELL_SIZE or next.y<0 or next.y >HEIGHT-CELL_SIZE:
+    #    return False, food
+    if next.x < 0 :
+        next.x= WIDTH -CELL_SIZE
+    if next.x > WIDTH - CELL_SIZE:
+        next.x=0
+    if next.y < 0 :
+        next.y= HEIGHT - CELL_SIZE
+    if next.y > HEIGHT - CELL_SIZE:
+        next.y=0
+
+    snakeNext = pygame.Rect(next.x, next.y, CELL_SIZE, CELL_SIZE)
+    if snakeNext in SNAKE or snakeNext in bridges:
+        return False, food
+    SNAKE.append(snakeNext)
+    if food in SNAKE:
+        food = manager_food(SNAKE,CELL_SIZE,WIDTH, HEIGHT,bridges)
+
+    else:
+        SNAKE.pop(0)
+    return True, food
 
 def draw_background(cell_size, height, width):
     color1_line=True
