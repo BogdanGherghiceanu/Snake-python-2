@@ -4,6 +4,26 @@ WIDTH_START = 400
 HEIGHT_START =600
 WIN = pygame.display.set_mode((WIDTH_START,HEIGHT_START))
 
+pygame.font.init()
+SCORE_FONT=pygame.font.SysFont('calibri',30)
+max_score = 1
+actual_score = 0
+#WINDOW MAIN MENU
+
+#colors
+BACKGROUND_COLOR1=(0, 181, 82)
+BACKGROUND_COLOR2=(2, 212, 97)
+BLACK = (0, 0, 0)
+GREEN= (34,139,34)
+BLACK = (0, 0, 0)
+BACKGROUND_COLOR=BLACK
+WHITE= (255,255,255)
+GREEN= (34,139,34)
+RED = (255,99,71)
+SNAKE_COLOR = BLACK
+FOOD_COLOR= (0, 22, 189)
+
+
 def draw_background(cell_size, height, width):
     color1_line=True
     for h in range(0, height, cell_size):
