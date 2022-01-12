@@ -122,6 +122,30 @@ def manager_food(SNAKE,CELL_SIZE,WIDTH, HEIGHT ,bridges):
             run=False
     return food
 
+def draw_game(cell_size, cells_x, cells_y, FOOD, SNAKE, bridges,max_score):
+    WIN.fill(BACKGROUND_COLOR)
+
+    height=cells_y*cell_size
+    width=cells_x*cell_size
+    draw_background(cell_size,height,width)
+
+    for bridge in bridges:
+        pygame.draw.rect(WIN, BLACK, bridge)
+
+    for snake_part in SNAKE:
+        pygame.draw.rect(WIN, SNAKE_COLOR, snake_part)
+    pygame.draw.rect(WIN, WHITE, SNAKE[-1])
+
+    pygame.draw.rect(WIN, FOOD_COLOR, FOOD)
+    score = len(SNAKE)
+    score_text = SCORE_FONT.render("Score " + str(score), 1, GREEN)
+
+    score_max_text = SCORE_FONT.render("Max score " + str(max_score), 1, GREEN)
+    WIN.blit(score_text, (2, height + 2))
+    WIN.blit(score_max_text,(width-score_max_text.get_width()-2,height+2))
+    pygame.display.update()
+
+
 def draw_background(cell_size, height, width):
     color1_line=True
     for h in range(0, height, cell_size):
