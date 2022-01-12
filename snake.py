@@ -1,4 +1,7 @@
+import copy
 import pygame
+import random
+import json
 
 WIDTH_START = 400
 HEIGHT_START =600
@@ -22,6 +25,53 @@ GREEN= (34,139,34)
 RED = (255,99,71)
 SNAKE_COLOR = BLACK
 FOOD_COLOR= (0, 22, 189)
+
+
+def load_json(nameOfFile):
+    path="costumize/"+nameOfFile+".json"
+    read=open(path)
+    jsonText=read.read()
+
+    jsonFile=json.loads(jsonText)
+
+
+    cell_size = jsonFile['cell_size']
+    cellsx = jsonFile['cellsx']
+    cellsy = jsonFile['cellsy']
+    speed = jsonFile['speed']
+    bridgesRect= []
+    for bridges in jsonFile['bridges']:
+        bridgesx=bridges['x']
+        bridgesy=bridges['y']
+        bridge_rect = pygame.Rect(((bridgesx-1)*cell_size),
+                                  ((bridgesy-1)*cell_size),
+                                  cell_size,
+                                  cell_size)
+        bridgesRect.append(bridge_rect)
+
+
+    read.close()
+    return cell_size,cellsx,cellsy,speed,bridgesRect
+
+
+def writeScoreJson(score):
+    dictionary = {
+        "score": score
+    }
+    jsonFile = json.dumps(dictionary)
+    with open("costumize/score.json", "w") as outfile:
+        outfile.write(jsonFile)
+
+def readScoreJson():
+    path = "costumize/score.json"
+    read = open(path)
+    jsonText = read.read()
+
+    jsonFile = json.loads(jsonText)
+
+    score = jsonFile['score']
+    print(score)
+    return score
 
 def move_snake(lastKey,food,SNAKE,CELL_SIZE, WIDTH, HEIGHT, bridges):
     next = copy.copy(SNAKE[-1])
