@@ -101,6 +101,16 @@ def draw_menu(button1_text, button1rect, button2_text, button2rect):
                               HEIGHT_START / 2 + (button1_text.get_height() // 2) + 15))
     pygame.display.update()
 
+def game_pause(width, height):
+    text1 = SCORE_FONT.render("Click arrows to resume", 1, WHITE)
+    pause_rect = pygame.Rect(width // 2 - (text1.get_width() // 2),
+                            height // 2 - (text1.get_height() ) // 2, text1.get_width(),
+                            text1.get_height())
+    pygame.draw.rect(WIN, BLACK, pause_rect)
+    WIN.blit(text1,
+             (pause_rect.x,pause_rect.y))
+    pygame.display.update()
+
 def game(nameOfFile):
 
     try:
