@@ -101,6 +101,30 @@ def draw_menu(button1_text, button1rect, button2_text, button2rect):
                               HEIGHT_START / 2 + (button1_text.get_height() // 2) + 15))
     pygame.display.update()
 
+
+def draw_lose(width, height):
+    text1 = SCORE_FONT.render("Ai pierdut", 1, WHITE)
+    text2 = SCORE_FONT.render("Click pentru un joc nou", 1, WHITE)
+    lose_rect=pygame.Rect(width//2-(text2.get_width()//2),height//2-(text1.get_height()+text2.get_height())//2,text2.get_width(),text1.get_height()+text2.get_height())
+    pygame.draw.rect(WIN, BLACK, lose_rect)
+
+    WIN.blit(text1, (width//2-(text1.get_width()//2),height//2-(text1.get_height()+text2.get_height())//2))
+    WIN.blit(text2,
+             (width // 2 - (text2.get_width() // 2), height // 2 +  2))
+    run_lose=True
+    pygame.display.update()
+    while run_lose:
+        mouse = pygame.mouse.get_pos()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run_lose = False
+                return -1
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if (width//2-(text2.get_width()//2)) <= mouse[0] <= (width//2-(text2.get_width()//2)+text2.get_width()) and (( height//2-(text1.get_height()+text2.get_height())//2) <=mouse[1] <= (height//2-(text1.get_height()+text2.get_height())//2)+text1.get_height()+text2.get_height()):
+                        run_lose=False
+    return 1
+
 def game_pause(width, height):
     text1 = SCORE_FONT.render("Click arrows to resume", 1, WHITE)
     pause_rect = pygame.Rect(width // 2 - (text1.get_width() // 2),
