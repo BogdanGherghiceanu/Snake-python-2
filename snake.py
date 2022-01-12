@@ -101,6 +101,70 @@ def draw_menu(button1_text, button1rect, button2_text, button2rect):
                               HEIGHT_START / 2 + (button1_text.get_height() // 2) + 15))
     pygame.display.update()
 
+def game(nameOfFile):
+
+    try:
+        cell_size,cells_x,cells_y,fps,bridges=load_json(nameOfFile)
+    except:
+        cell_size = 20
+        cells_x = 40
+        cells_y = 25
+        fps = 9
+        bridges= []
+    try:
+        max_score=readScoreJson()
+        print(max_score)
+    except:
+        max_score=0
+    clock = pygame.time.Clock()
+    run_game = True
+    pause_game = True
+    WIDTH=cells_x*cell_size
+    HEIGHT=cells_y*cell_size
+    WIN = pygame.display.set_mode((WIDTH, HEIGHT+40))
+    lastKey = pygame.K_UP
+    snakeFirstPosition = pygame.Rect(WIDTH // 2 - (WIDTH / 2) % cell_size, HEIGHT // 2 - (HEIGHT / 2) % cell_size,
+                                     cell_size, cell_size)
+    SNAKE=[]
+    SNAKE.append(snakeFirstPosition)
+    food = manager_food(SNAKE,cell_size,WIDTH,HEIGHT,bridges)
+
+    while run_game:
+        clock.tick(fps)
+        SNAKE_COLOR = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run_game = False
+                return -1
+            if event.type == pygame.KEYDOWN:
+                if event.key in (pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN):
+                    if not ( ( lastKey==pygame.K_LEFT and event.key == pygame.K_RIGHT ) or
+                    ( lastKey == pygame.K_RIGHT and event.key == pygame.K_LEFT ) or
+                    ( lastKey == pygame.K_DOWN and event.key == pygame.K_UP ) or
+                    ( lastKey == pygame.K_UP and event.key == pygame.K_DOWN )
+                    ):
+                        lastKey=event.key
+                        pause_game=True
+                if event.key == pygame.K_ESCAPE:
+                    pause_game = False
+        if pause_game:
+            check_move, food =move_snake(lastKey,food,SNAKE, cell_size, WIDTH, HEIGHT,bridges)
+            if check_move==False :
+                a=draw_lose(WIDTH,HEIGHT)
+
+                if len(SNAKE)>max_score:
+                    writeScoreJson(len(SNAKE))
+                if a==-1:
+                    return -1
+                if nameOfFile == "default":
+                    return 1
+                else:
+                    return 2
+            draw_game(cell_size,cells_x,cells_y,food, SNAKE,bridges,max_score)
+        else:
+            game_pause(WIDTH,HEIGHT)
+
+
 def menu():
     # button Start new game
     button1_text = SCORE_FONT.render("Start new game", 1, BACKGROUND_COLOR1)
